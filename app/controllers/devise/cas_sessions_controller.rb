@@ -5,7 +5,11 @@ class Devise::CasSessionsController < Devise::SessionsController
     unloadable
   end
 
-  skip_before_filter :verify_authenticity_token, :only => [:single_sign_out]
+  if Rails::VERSION::MAJOR >= 5
+    skip_before_action :verify_authenticity_token, :only => [:single_sign_out]
+  else
+    skip_before_filter :verify_authenticity_token, :only => [:single_sign_out]
+  end
 
   def new
     redirect_to(cas_login_url)
